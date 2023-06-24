@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Page with Button and Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #dddddd65;
+            border: 1px solid black;
+            color: rgb(54, 52, 52);
+            padding: 3px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ccc;
+        }
+        table {
+            width: 300px;
+            border-collapse: collapse;
+            background-color: white;
+            text-align: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="image" onchange="uploadImage()">
+        <button type="submit" class="button">Классифицировать</button>
+    </form>
+    
+    <table>
+        <tr>
+            <td>Width</td>
+            <td>0</td>
+            
+        </tr>
+        <tr>
+            <td>Height</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Result</td>
+            <td>Unknown</td>
+        </tr>
+    </table>
+
+    <script>
+        function uploadImage() {
+            var form = document.getElementById("myForm");
+            var formData = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Image uploaded successfully!");
+                }
+            };
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html>
