@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Web Page with Button and Table</title>
     <style>
@@ -8,9 +9,11 @@
             background-color: #f4f4f4;
             padding: 20px;
         }
+
         form {
             margin-bottom: 20px;
         }
+
         .button {
             background-color: #dddddd65;
             border: 1px solid black;
@@ -29,6 +32,7 @@
         .button:hover {
             background-color: #ccc;
         }
+
         table {
             width: 300px;
             border-collapse: collapse;
@@ -36,51 +40,129 @@
             text-align: center;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
-        th, td {
+
+        th,
+        td {
             padding: 10px;
             border: 1px solid #ccc;
         }
+
         th {
             background-color: #f0f0f0;
         }
     </style>
 </head>
+
 <body>
-    <form id="myForm" enctype="multipart/form-data">
-        <input type="file" id="fileInput" name="image" onchange="uploadImage()">
-        <button type="submit" class="button">Классифицировать</button>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/jpeg">
+        <input type="submit" value="Классифицировать">
     </form>
-    
-    <table>
-        <tr>
-            <td>Width</td>
-            <td>0</td>
-            
-        </tr>
-        <tr>
-            <td>Height</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Result</td>
-            <td>Unknown</td>
-        </tr>
-    </table>
-
+    <form id='upload-form'>
+        <table>
+            <tr>
+                <td>Width</td>
+                <td id='width'>0</td>
+            </tr>
+            <tr>
+                <td>Height</td>
+                <td id='height'>0</td>
+            </tr>
+            <tr>
+                <td>Result</td>
+                <td id='result'>0</td>
+            </tr>
+        </table>
+    </form>
     <script>
-        function uploadImage() {
-            var form = document.getElementById("myForm");
-            var formData = new FormData(form);
-
+        function fetchData() {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/upload", true);
-            xhr.onreadystatechange = function() {
+            xhr.open('POST', '/', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Image uploaded successfully!");
+                    var response = JSON.parse(xhr.responseText);
+                    displayData(response);
                 }
             };
-            xhr.send(formData);
+            xhr.send();
         }
+
+        // Function to display the retrieved data in the table
+        function displayData(data) {
+            var tableBody = document.querySelector('#data-table tbody');
+            var row = document.createElement('tr');
+
+            var widthCell = document.createElement('td');
+            widthCell.textContent = data.width;
+            row.appendChild(widthCell);
+
+            var heightCell = document.createElement('td');
+            heightCell.textContent = data.height;
+            row.appendChild(heightCell);
+
+            var classLabelCell = document.createElement('td');
+            classLabelCell.textContent = data.class_label;
+            row.appendChild(classLabelCell);
+
+            tableBody.appendChild(row);
+        }
+
+        // Call the fetchData function to retrieve the JSON data and display it in the table
+        fetchData();
+
+        // function uploadImage() {
+        //     var form = document.getElementById('tableForm');
+        //     var formData = new FormData(form);
+
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open('POST', '/', true);
+        //     xhr.onreadystatechange = function () {
+        //         if (xhr.readyState === 4 && xhr.status === 200) {
+        //             console.log('Image uploaded successfully!');
+
+        //             var data = JSON.parse(xhr.responseText);
+        //             document.getElementById('width').innerText = data.width;
+        //             document.getElementById('height').innerText = data.height;
+        //             document.getElementById('result').innerText = data.class_label;
+        //         }
+        //     };
+        //     xhr.send(formData);
+        // }
+        // uploadImage()
+        // const form = document.getElementById("upload-form");
+
+        // form.addEventListener("submit", handleFormSubmit);
+
+        // async function handleFormSubmit(e) {
+        //     e.preventDefault();
+
+        //     const formData = new FormData(form);
+
+        //     try {
+        //         const response = await fetch("/", {
+        //             method: "POST",
+        //             body: formData,
+        //         });
+
+        //         if (response.ok) {
+        //             const responseData = await response.json();
+        //             updateHTMLElements(responseData);
+        //         } else {
+        //             console.error("Error:", response.status);
+        //         }
+        //     } catch (error) {
+        //         console.error("Error:", error);
+        //     }
+        // }
+
+        // function updateHTMLElements(responseData) {
+        //     document.getElementById("width").textContent = responseData.width;
+        //     document.getElementById("height").textContent = responseData.height;
+        //     document.getElementById("class-label").textContent = responseData.class_label;
+        // }
+
     </script>
 </body>
+
 </html>

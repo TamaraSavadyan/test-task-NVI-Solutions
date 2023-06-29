@@ -1,7 +1,5 @@
 import torch
 import torchvision.transforms as transforms
-from PIL import Image
-from torchvision.models import resnet50
 from torchvision import models
 
 model = models.resnet50(pretrained=True)
@@ -17,7 +15,7 @@ def classify_image(image):
     input_tensor = transform(image)
     input_batch = input_tensor.unsqueeze(0)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     input_batch = input_batch.to(device)
 
     with torch.no_grad():
