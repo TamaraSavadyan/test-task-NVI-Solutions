@@ -29,12 +29,13 @@ async def post(request: Request, file: UploadFile = File(...)):
     class_label = labels[class_idx]
 
     response = {
+        'request': request,
         'width': width,
         'height': height,
         'class_label': class_label
     }
 
-    return response
+    return templates.TemplateResponse('index.html', response)
 
 
 @app.get('/')
